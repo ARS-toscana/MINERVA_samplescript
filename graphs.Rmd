@@ -1,0 +1,61 @@
+---
+title: "GRAPHS"
+output: 
+  html_document:
+    theme: united
+    toc: TRUE
+    toc_float: TRUE
+params:
+  RES_ageband_by_gender: NULL
+  RES_ageband: NULL
+  RES_gender: NULL
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+```
+
+```{r params_start}
+# ```{css}
+# h1 {color: #ed008c}
+# h2 {color: #00adef}
+# h3 {color: #6ccff6}
+# .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {background-color: #00adef; border-color: #00adef}
+```
+
+
+
+```{r params}
+RES_gender=params$RES_gender
+RES_ageband=params$RES_ageband
+RES_ageband_by_gender=params$RES_ageband_by_gender
+```
+
+# COUNTS BY GENDER
+```{r graph1}
+graph1<-ggplot(RES_gender,aes(year,N,fill=gender))+
+  geom_col(position = "dodge2")+
+  theme_hc()
+
+ggplotly(graph1)
+```
+
+# COUNTS BY AGE
+```{r graph2}
+graph2<-ggplot(RES_ageband,aes(year,N,fill=age_bands))+
+  geom_col(position = "dodge2")+
+  theme_hc()
+
+ggplotly(graph2)
+
+```
+
+# COUNTS BY AGE AND GENDER
+```{r graph3}
+graph3<-ggplot(RES_ageband_by_gender,aes(year,perc,fill=age_bands))+
+  geom_col()+
+  facet_grid(~gender)+
+  theme_hc()
+
+ggplotly(graph3)
+```
