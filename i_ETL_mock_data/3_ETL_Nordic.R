@@ -25,7 +25,7 @@ setkeyv(ANAFULL,"ID")
 ## PERSONS:
 # Action: all rows of ANAFULL for the same person_id have the same variables below, so one single row of PERSONS is generated
 
-#create person_id as number that identifier uniquly person, used to link across tables. (Primary key)
+#create person_id as number that identifier uniquely person, used to link across tables. (Primary key)
 PERSONS<-copy(ANAFULL)
 
 #renamed vars
@@ -63,7 +63,7 @@ setnames(OBSERVATION_PERIODS,"SESSO","sex")
 # create obs_period_end_reason
 OBSERVATION_PERIODS<-OBSERVATION_PERIODS[obs_period_end_date==date_end, obs_period_end_reason:=1]
 OBSERVATION_PERIODS<-OBSERVATION_PERIODS[obs_period_end_date==death_date, obs_period_end_reason:=2]
-OBSERVATION_PERIODS<-OBSERVATION_PERIODS[!is.na(death_date) & (obs_period_end_date!=death_date & obs_period_end_date!=date_end), obs_period_end_reason:=3] 
+OBSERVATION_PERIODS<-OBSERVATION_PERIODS[is.na(death_date) & obs_period_end_date!=date_end, obs_period_end_reason:=3]
 
 # keep only needed vars.
 OBSERVATION_PERIODS<-OBSERVATION_PERIODS[,.(obs_period_id,person_id,source,obs_period_start_date,obs_period_end_date,obs_period_end_reason)]
