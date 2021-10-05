@@ -18,7 +18,7 @@ source(paste0(thisdir,"/parameters/parameters_Nordic.R"))
 setwd(thisdir)
 
 
-# 6.	Use ANAFULL to populate PERSONS, OBSERVATION_PERIODS --------
+# 01.	Use ANAFULL to populate PERSONS, OBSERVATION_PERIODS --------
 ANAFULL <- fread(paste0(dirinput,"/ANAFULL.csv"))
 setkeyv(ANAFULL,"ID")
 
@@ -61,7 +61,7 @@ setnames(OBSERVATION_PERIODS,"SESSO","sex")
 # create obs_period_end_reason
 OBSERVATION_PERIODS<-OBSERVATION_PERIODS[obs_period_end_date==date_end, obs_period_end_reason:=1]
 OBSERVATION_PERIODS<-OBSERVATION_PERIODS[obs_period_end_date==death_date, obs_period_end_reason:=2]
-OBSERVATION_PERIODS<-OBSERVATION_PERIODS[(obs_period_end_date!=death_date & obs_period_end_date!=date_end ), obs_period_end_reason:=3] #| is.na(datadec)
+OBSERVATION_PERIODS<-OBSERVATION_PERIODS[!is.na(death_date) & (obs_period_end_date!=death_date & obs_period_end_date!=date_end), obs_period_end_reason:=3] 
 
 # keep only needed vars.
 OBSERVATION_PERIODS<-OBSERVATION_PERIODS[,.(obs_period_id,person_id,source,obs_period_start_date,obs_period_end_date,obs_period_end_reason)]
