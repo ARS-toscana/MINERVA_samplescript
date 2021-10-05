@@ -2,6 +2,9 @@
 # D4_aggregate<-reshape(D4, idvar = "person_id", varying = list(8:12),
 #                       v.names = "year", direction = "long")
 
+#LOAD THE D3 file and create the aggregated ones
+D3<-fread(paste0(diroutput,"D3.csv"))
+
 cols_tokeep<-colnames(D3)[!grepl("20",colnames(D3))]
 measures<-colnames(D3)[grepl("20",colnames(D3))]
 
