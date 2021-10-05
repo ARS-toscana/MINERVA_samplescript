@@ -24,10 +24,8 @@ setkeyv(ANAFULL,"ID")
 
 ## PERSONS:
 # Action: all rows of ANAFULL for the same person_id have the same variables below, so one single row of PERSONS is generated
-PERSONS<-ANAFULL
 
 #create person_id as number that identifier uniquly person, used to link across tables. (Primary key)
-PERSONS<-PERSONS[,person_id:=1:.N]
 PERSONS<-copy(ANAFULL)
 
 #renamed vars
@@ -36,7 +34,11 @@ setnames(PERSONS,"DATA_NASCITA","birth_date")
 setnames(PERSONS,"DATA_MORTE_MARSI","death_date")
 setnames(PERSONS,"SESSO","sex")
 
+# make the data unique
+PERSONS<-unique(PERSONS[,.(person_id_src,birth_date,sex,death_date)])
+
 # keep only needed vars.
+PERSONS<-PERSONS[,person_id:=1:.N]
 PERSONS<-PERSONS[,.(person_id,person_id_src,birth_date,sex,death_date)]
 
 fwrite(PERSONS, paste0(diroutput,"/PERSONS.csv"), quote = "auto")
