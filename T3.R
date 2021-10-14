@@ -10,6 +10,8 @@ measures<-colnames(D3)[grepl("20",colnames(D3))]
 
 D3_aggregate<-melt(D3, id.vars = cols_tokeep, measure.vars = measures,
                    variable.name = "year", na.rm = T)
+
+D3_aggregate<-unique(D3_aggregate[,.(person_id,gender,age_bands,year)])
                       
 #AGGREGATION BY AGEBAND AND GENDER
 RES_ageband_by_gender<-D3_aggregate[, .(N = .N), by = c("year","age_bands","gender")]
