@@ -1,62 +1,29 @@
-#-------------------------------
-# MINERVA script
-# v1 - 10 September 2021
-# author: Olga Paoletti
+# in this step the file of study variables is created from the instance of the CDM
+
+dirinput <- paste0(thisdir,"/i_input_",CDM,"/") 
+namefileoutput <- paste0(diroutput,"D3_",CDM,".csv")
+
+print(paste0("creating study variables from mock data converted to the ",CDM," CDM"))
 
 
-#parameters----------------------------------------------
-rm(list=ls(all.names=TRUE))
-
-#set the directory where the file is saved as the working directory
-if (!require("rstudioapi")) install.packages("rstudioapi")
-if (!require("data.table")) install.packages("data.table")
-if (!require("lubridate")) install.packages("lubridate")
-
-thisdir<-setwd(dirname(rstudioapi::getSourceEditorContext()$path))
-thisdir<-setwd(dirname(rstudioapi::getSourceEditorContext()$path))
-
-
-#############################################
-#FUNCTION TO COMPUTE AGE
-#############################################
-Agebands =c(-1, 19, 29, 39, 49, 59, 69, 80, Inf)
-
-age_fast = function(from, to) {
-  from_lt = as.POSIXlt(from)
-  to_lt = as.POSIXlt(to)
-  
-  age = to_lt$year - from_lt$year
-  
-  ifelse(to_lt$mon < from_lt$mon |
-           (to_lt$mon == from_lt$mon & to_lt$mday < from_lt$mday),
-         age - 1, age)
-}
-
-#directories----
-
-diroutput <- paste0(thisdir,"/g_output/") 
-dirmacro <- paste0(thisdir,"/p_macro/")
-suppressWarnings(if (!file.exists(diroutput)) dir.create(file.path( diroutput)))
-suppressWarnings(if (!file.exists(dirmacro)) dir.create(file.path( dirmacro)))
-
-source(paste0(dirmacro,"CreateSpells_v14.R"))
-
-#Set the CDM parameter equal to: ConcePTION, Nordic or TheShinISS
-CDM<-"ConcePTION"
-#CDM<-"Nordic"
-#CDM<-"TheShinISS"
-
-if (CDM=="ConcePTION") {
-  dirinput <- paste0(thisdir,"/i_input_ConcePTION/") 
+if (CDM == "ConcePTION" | CDM == "OMOP") {
   
   #IMPORT TABLES
   OBSERVATION_PERIODS<-fread(paste0(dirinput,"OBSERVATION_PERIODS.csv"))
   PERSONS<-fread(paste0(dirinput,"PERSONS.csv"))
   
   #SELECT ONLY THE VARIABLES OF INTEREST
-  PERSONS<-PERSONS[,.(person_id,sex_at_instance_creation,day_of_birth,month_of_birth,year_of_birth)]
-  setnames(PERSONS,"sex_at_instance_creation","gender")
-  OBSERVATION_PERIODS<-OBSERVATION_PERIODS[,.(person_id,op_start_date,op_end_date )]
+  if (CDM == "ConcePTION"){
+    PERSONS <- PERSONS[,.(person_id,sex_at_instance_creation,day_of_birth,month_of_birth,year_of_birth)]
+    setnames(PERSONS,"sex_at_instance_creation","gender")
+    OBSERVATION_PERIODS <- OBSERVATION_PERIODS[,.(person_id,op_start_date,op_end_date )]
+  }else if (CDM == "OMOP"){
+    PERSONS <- PERSONS[,.(person_id,gender_concept_id,day_of_birth,month_of_birth,year_of_birth)]
+    setnames(PERSONS,"gender_concept_id","gender")
+    OBSERVATION_PERIODS <- OBSERVATION_PERIODS[,.(person_id,observation_period_start_date,observation_period_end_date )]
+    setnames(OBSERVATION_PERIODS,"observation_period_start_date","op_start_date")
+    setnames(OBSERVATION_PERIODS,"observation_period_end_date","op_end_date")
+  }
   
   output_spells_category <- CreateSpells(
     dataset=OBSERVATION_PERIODS,
@@ -78,21 +45,16 @@ if (CDM=="ConcePTION") {
   D3<-D3 [,age_bands:=cut(age, breaks = Agebands,  labels = c("0-19","20-29", "30-39", "40-49","50-59","60-69", "70-79","80+"))]
   
 
-  # #CHECK PRESENCE PER YEAR (2015-2019): a subject is present i the year if is for one day in survey observation
+  # #CHECK PRESENCE PER YEAR (2015-2019): a subject is present in the year if is for one day in survey observation
   D3[ entry_spell_category<=as_date("20151231") & exit_spell_category>= as_date("20150101") , "2015":=1]
   D3[ entry_spell_category<=as_date("20161231") & exit_spell_category>= as_date("20160101")  , "2016":=1]
   D3[ entry_spell_category<=as_date("20171231") & exit_spell_category>= as_date("20170101") , "2017":=1]
   D3[ entry_spell_category<=as_date("20181231") & exit_spell_category>= as_date("20180101") , "2018":=1]
   D3[ entry_spell_category<=as_date("20191231") & exit_spell_category>= as_date("20190101") , "2019":=1]
+
+  rm(output_spells_category,PERSONS,OBSERVATION_PERIODS)
   
-  #EXPORT D3
-  fwrite(D3,file=paste0(diroutput,"D3.csv"))
-  
-  rm(output_spells_category,PERSONS,OBSERVATION_PERIODS,D3)
-  
-} else if (CDM=="Nordic") {
-  dirinput <- paste0(thisdir,"/i_input_Nordic/") 
-  
+} else if (CDM == "Nordic") {
   #IMPORT TABLES
   OBSERVATION_PERIODS<-fread(paste0(dirinput,"OBSERVATION_PERIODS.csv"))
   PERSONS<-fread(paste0(dirinput,"PERSONS.csv"))
@@ -133,14 +95,10 @@ if (CDM=="ConcePTION") {
   D3[ entry_spell_category<=as_date("20181231") & exit_spell_category>= as_date("20180101") , "2018":=1]
   D3[ entry_spell_category<=as_date("20191231") & exit_spell_category>= as_date("20190101") , "2019":=1]
   
-  #EXPORT D3
-  fwrite(D3,file=paste0(diroutput,"D3.csv"))
   
-  rm(output_spells_category,PERSONS,OBSERVATION_PERIODS,D3)
+  rm(output_spells_category,PERSONS,OBSERVATION_PERIODS)
   
-} else if (CDM=="TheShinISS") {
-  
-  dirinput <- paste0(thisdir,"/i_input_TheShinISS/") 
+} else if (CDM == "TheShinISS") {
   
   #IMPORT TABLES
   ANAGRAFE_ASSISTITI<-fread(paste0(dirinput,"ANAGRAFE_ASSISTITI.csv"))
@@ -177,10 +135,11 @@ if (CDM=="ConcePTION") {
   D3[ entry_spell_category<=as_date("20181231") & exit_spell_category>= as_date("20180101") , "2018":=1]
   D3[ entry_spell_category<=as_date("20191231") & exit_spell_category>= as_date("20190101") , "2019":=1]
   
-  #EXPORT D3
-  fwrite(D3,file=paste0(diroutput,"D3.csv"))
-  
-  rm(output_spells_category,ANAGRAFE_ASSISTITI,OBSERVATION_PERIODS,D3)
+  rm(output_spells_category,ANAGRAFE_ASSISTITI,OBSERVATION_PERIODS)
   
 }
 
+#CLEAN AND EXPORT D3
+D3 <- D3[,.(person_id,gender,age_bands,'2015','2016','2017','2018','2019')]
+fwrite(D3,file = namefileoutput)
+rm(D3)
