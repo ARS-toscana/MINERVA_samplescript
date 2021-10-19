@@ -140,6 +140,8 @@ if (CDM == "ConcePTION" | CDM == "OMOP") {
 }
 
 #CLEAN AND EXPORT D3
-D3 <- D3[,.(person_id,gender,age_bands,'2015','2016','2017','2018','2019')]
+vartokeep <- c('person_id','gender','age_bands','2015','2016','2017','2018','2019')
+#D3 <- D3[,.(person_id,gender,age_bands,2015,2016,2017,2018,2019)]
+D3 <- D3[,..vartokeep]
 fwrite(D3,file = namefileoutput)
 rm(D3)
