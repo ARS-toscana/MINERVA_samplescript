@@ -61,7 +61,8 @@ if (CDM == "ConcePTION" | CDM == "OMOP") {
   
   #SELECT ONLY THE VARIABLES OF INTEREST
   PERSONS<-PERSONS[,.(person_id_src,sex,birth_date)]
-  setnames(PERSONS,"sex","gender")
+  #setnames(PERSONS,"sex","gender")
+  PERSONS<-PERSONS[sex == 2, gender := 'F'][sex == 1, gender := 'M']
   setnames(PERSONS,"person_id_src","person_id")
   OBSERVATION_PERIODS<-OBSERVATION_PERIODS[,.(person_id,obs_period_start_date,obs_period_end_date,source )]
   
@@ -105,7 +106,8 @@ if (CDM == "ConcePTION" | CDM == "OMOP") {
 
   #SELECT ONLY THE VARIABLES OF INTEREST
   OBSERVATION_PERIODS<-ANAGRAFE_ASSISTITI[,.(id,sesso,datanas,data_inizioass,data_fineass)]
-  setnames(OBSERVATION_PERIODS,"sesso","gender")
+  #setnames(OBSERVATION_PERIODS,"sesso","gender")
+  OBSERVATION_PERIODS<-OBSERVATION_PERIODS[sesso == 2, gender := 'F'][sesso == 1, gender := 'M']
   setnames(OBSERVATION_PERIODS,"id","person_id")
   setnames(OBSERVATION_PERIODS,"datanas","birth_date")
   setnames(OBSERVATION_PERIODS,"data_inizioass","op_start_date")
@@ -141,7 +143,6 @@ if (CDM == "ConcePTION" | CDM == "OMOP") {
 
 #CLEAN AND EXPORT D3
 vartokeep <- c('person_id','gender','age_bands','2015','2016','2017','2018','2019')
-#D3 <- D3[,.(person_id,gender,age_bands,2015,2016,2017,2018,2019)]
 D3 <- D3[,..vartokeep]
 fwrite(D3,file = namefileoutput)
 rm(D3)
