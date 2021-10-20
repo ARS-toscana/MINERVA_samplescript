@@ -50,9 +50,9 @@ PERSON<-PERSON[,`:=`(day_of_birth=as.character(day(DATA_NASCITA)),
                      month_of_birth=as.character(month(DATA_NASCITA)), 
                      year_of_birth=as.character(year(DATA_NASCITA)))]
 rm(PERSON_)
-# ##21/12: change in modality of sex_at_instance_creation
-# PERSON<-PERSON[,SESSO:=as.character(SESSO)]
-# PERSON<-PERSON[SESSO=="1",SESSO:="M"][SESSO=="2",SESSO:="F"]
+##21/12: change in modality of sex_at_instance_creation
+PERSON<-PERSON[,SESSO:=as.character(SESSO)]
+PERSON<-PERSON[SESSO=="1",SESSO:="M"][SESSO=="2",SESSO:="F"]
 
 ##22/04: added 0 if is not present, is mandatory to have2 digits
 PERSON<-PERSON[nchar(day_of_birth)==1,day_of_birth:=paste0("0",day_of_birth)]
