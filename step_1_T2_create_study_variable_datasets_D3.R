@@ -19,7 +19,7 @@ if (CDM == "ConcePTION" | CDM == "OMOP") {
     OBSERVATION_PERIODS <- OBSERVATION_PERIODS[,.(person_id,op_start_date,op_end_date )]
   }else if (CDM == "OMOP"){
     PERSONS <- PERSONS[,.(person_id,gender_concept_id,day_of_birth,month_of_birth,year_of_birth)]
-    setnames(PERSONS,"gender_concept_id","gender")
+    PERSONS<-PERSONS[gender_concept_id == 2, gender := 'F'][gender_concept_id == 1, gender := 'M'][,gender_concept_id:=NULL]
     OBSERVATION_PERIODS <- OBSERVATION_PERIODS[,.(person_id,observation_period_start_date,observation_period_end_date )]
     setnames(OBSERVATION_PERIODS,"observation_period_start_date","op_start_date")
     setnames(OBSERVATION_PERIODS,"observation_period_end_date","op_end_date")
