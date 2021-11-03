@@ -40,17 +40,8 @@ if (CDM == "ConcePTION" | CDM == "OMOP") {
   D3[,birth_date:=as_date(birth_date)][,entry_spell_category:=as_date(as.character(entry_spell_category))][,exit_spell_category:=as_date(as.character(exit_spell_category))]
   
   
-  #COMPUTE AGE
-  D3<-D3[,age:=age_fast(birth_date,as_date("20190101"))]
-  D3<-D3 [,age_bands:=cut(age, breaks = Agebands,  labels = c("0-19","20-29", "30-39", "40-49","50-59","60-69", "70-79","80+"))]
-  
 
-  # #CHECK PRESENCE PER YEAR (2015-2019): a subject is present in the year if is for one day in survey observation
-  D3[ entry_spell_category<=as_date("20151231") & exit_spell_category>= as_date("20150101") , "2015":=1]
-  D3[ entry_spell_category<=as_date("20161231") & exit_spell_category>= as_date("20160101")  , "2016":=1]
-  D3[ entry_spell_category<=as_date("20171231") & exit_spell_category>= as_date("20170101") , "2017":=1]
-  D3[ entry_spell_category<=as_date("20181231") & exit_spell_category>= as_date("20180101") , "2018":=1]
-  D3[ entry_spell_category<=as_date("20191231") & exit_spell_category>= as_date("20190101") , "2019":=1]
+
 
   rm(output_spells_category,PERSONS,OBSERVATION_PERIODS)
   
@@ -77,26 +68,7 @@ if (CDM == "ConcePTION" | CDM == "OMOP") {
   
   # #CREATE BIRTH DATES from the 3 separate columns (day_of_birth,month_of_birth and year_of_birth)
    D3<-merge(PERSONS,output_spells_category,all.x=T)
-  # [,day_of_birth:=as.character(day_of_birth)][,month_of_birth:=as.character(month_of_birth)]
-  # D3[nchar(day_of_birth)<=1,day_of_birth:=paste0(0,day_of_birth)][nchar(month_of_birth)<=1,month_of_birth:=paste0(0,month_of_birth)]
-  # D3[,date_of_birth:=paste0(year_of_birth,month_of_birth,day_of_birth)][,year_of_birth:=NULL][,month_of_birth:=NULL][,day_of_birth:=NULL]
-  # D3[,date_of_birth:=as_date(date_of_birth)][,op_start_date:=as_date(as.character(op_start_date))][,op_end_date:=as_date(as.character(op_end_date))]
-  
-  
-  #COMPUTE AGE
-  D3<-D3[,age:=age_fast(birth_date,as_date("20190101"))]
-  D3<-D3 [,age_bands:=cut(age, breaks = Agebands,  labels = c("0-19","20-29", "30-39", "40-49","50-59","60-69", "70-79","80+"))]
-  
 
-  
-  # #CHECK PRESENCE PER YEAR (2015-2019): a subject is present i the year if is for one day in survey observation
-  D3[ entry_spell_category<=as_date("20151231") & exit_spell_category>= as_date("20150101") , "2015":=1]
-  D3[ entry_spell_category<=as_date("20161231") & exit_spell_category>= as_date("20160101")  , "2016":=1]
-  D3[ entry_spell_category<=as_date("20171231") & exit_spell_category>= as_date("20170101") , "2017":=1]
-  D3[ entry_spell_category<=as_date("20181231") & exit_spell_category>= as_date("20180101") , "2018":=1]
-  D3[ entry_spell_category<=as_date("20191231") & exit_spell_category>= as_date("20190101") , "2019":=1]
-  
-  
   rm(output_spells_category,PERSONS,OBSERVATION_PERIODS)
   
 } else if (CDM == "TheShinISS") {
@@ -106,7 +78,6 @@ if (CDM == "ConcePTION" | CDM == "OMOP") {
 
   #SELECT ONLY THE VARIABLES OF INTEREST
   OBSERVATION_PERIODS<-ANAGRAFE_ASSISTITI[,.(id,sesso,datanas,data_inizioass,data_fineass)]
-  #setnames(OBSERVATION_PERIODS,"sesso","gender")
   OBSERVATION_PERIODS<-OBSERVATION_PERIODS[sesso == 2, gender := 'F'][sesso == 1, gender := 'M'][,sesso:=NULL]
   setnames(OBSERVATION_PERIODS,"id","person_id")
   setnames(OBSERVATION_PERIODS,"datanas","birth_date")
@@ -125,24 +96,25 @@ if (CDM == "ConcePTION" | CDM == "OMOP") {
   
   D3<-merge(unique(OBSERVATION_PERIODS[,.(person_id,gender,birth_date)]),output_spells_category[,.(person_id,entry_spell_category,exit_spell_category)],all.x=T)
   
-  #COMPUTE AGE
-  D3<-D3[,age:=age_fast(birth_date,as_date("20190101"))]
-  D3<-D3 [,age_bands:=cut(age, breaks = Agebands,  labels = c("0-19","20-29", "30-39", "40-49","50-59","60-69", "70-79","80+"))]
-  
-  
-  # #CHECK PRESENCE PER YEAR (2015-2019): a subject is present i the year if is for one day in survey observation
-  D3[ entry_spell_category<=as_date("20151231") & exit_spell_category>= as_date("20150101") , "2015":=1]
-  D3[ entry_spell_category<=as_date("20161231") & exit_spell_category>= as_date("20160101")  , "2016":=1]
-  D3[ entry_spell_category<=as_date("20171231") & exit_spell_category>= as_date("20170101") , "2017":=1]
-  D3[ entry_spell_category<=as_date("20181231") & exit_spell_category>= as_date("20180101") , "2018":=1]
-  D3[ entry_spell_category<=as_date("20191231") & exit_spell_category>= as_date("20190101") , "2019":=1]
-  
   rm(output_spells_category,ANAGRAFE_ASSISTITI,OBSERVATION_PERIODS)
   
 }
 
+
+# #CHECK PRESENCE PER YEAR: a subject is present in the year if is for one day in survey observation
+for ( i in 1:length(years)){
+  D3[ entry_spell_category<=as_date(paste0(years[i],"1231")) & exit_spell_category>= as_date(paste0(years[i],"0101")) , years[i]:=1]
+  
+  #COMPUTE AGE
+  D3<-D3[,paste0("age",years[i]):=age_fast(birth_date,as_date(paste0(years[i],"0101")))]
+  D3<-D3 [,paste0("age_bands",years[i]):=cut(get(paste0("age",years[i])), breaks = Agebands,  labels = Labels)]
+}
+
+
 #CLEAN AND EXPORT D3
-vartokeep <- c('person_id','gender','age_bands','2015','2016','2017','2018','2019')
-D3 <- D3[,..vartokeep]
+vartokeep <- c('person_id','gender',years, paste0("age_bands", years))
+
+# D3<-D3[!is.na(get(years[1])) & !is.na(get(years[2])) & !is.na(get(years[3])) & !is.na(get(years[4])) & !is.na(get(years[5])), ]
+D3 <- unique(D3[,..vartokeep])
+
 fwrite(D3,file = namefileoutput)
-rm(D3)

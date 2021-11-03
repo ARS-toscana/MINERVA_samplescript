@@ -20,6 +20,8 @@ thisdir<-setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 #FUNCTION TO COMPUTE AGE
 #############################################
 Agebands =c(-1, 19, 29, 39, 49, 59, 69, 80, Inf)
+Labels = c("0-19","20-29", "30-39", "40-49","50-59","60-69", "70-79","80+")
+years<-c("2015","2016","2017","2018","2019")
 
 age_fast = function(from, to) {
   from_lt = as.POSIXlt(from)
