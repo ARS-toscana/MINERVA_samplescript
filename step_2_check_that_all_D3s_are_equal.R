@@ -7,7 +7,7 @@ print(paste0("creating study variables from mock data converted to the ",CDM," C
 
 #IMPORT TABLES
 
-CDM<-c("ConcePTION","OMOP","Nordic","TheShinISS")
+CDM <- CDMs
 
 combs<-combn(CDM, 2, simplify = FALSE)
 
