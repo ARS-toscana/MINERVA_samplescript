@@ -1,6 +1,6 @@
 
 #LOAD THE D3 file and create the aggregated ones
-D3<-fread(paste0(diroutput,"D3.csv"), skip=1, header=TRUE)
+D3<-fread(paste0(dirtemp,"D3.csv"), skip=1, header=TRUE)
 
 agebandss<-paste0("age_bands", years)
 
