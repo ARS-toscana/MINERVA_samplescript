@@ -9,7 +9,7 @@ In the script stored in this repository, the following steps are enacted
 1. In [the folder i_ETL_mock_data](https://github.com/ARS-toscana/MINERVA_samplescript/tree/main/i_ETL_mock_data) a data set of mock population data is loaded and converted to four Common Data Models; the output of each conversion is saved to the corresponding folder: [ConcePTION](https://github.com/ARS-toscana/MINERVA_samplescript/tree/main/i_input_ConcePTION), [OMOP](https://github.com/ARS-toscana/MINERVA_samplescript/tree/main/i_input_OMOP), [Nordic](https://github.com/ARS-toscana/MINERVA_samplescript/tree/main/i_input_Nordic), [TheShinISS](https://github.com/ARS-toscana/MINERVA_samplescript/tree/main/i_input_TheShinISS)
 2. In the main page, the script [to_run.R](https://github.com/ARS-toscana/MINERVA_samplescript/blob/main/to_run.R) executes the creation of study variables for the 4 CDMs, checks that they are all equal, and the executes the analysis. The output is stored in the folder [g_output](https://github.com/ARS-toscana/MINERVA_samplescript/blob/main/g_output/) in three files named RES_ageband.csv, RES_gender.csv, RES_ageband_by_gender.csv.
 
-Running the script as is proves that the script can run on the four supported CDMs and produce the same results.
+To prove that the script can run on the four supported CDMs and produce the same results, run the script to_run.R, as it is provided in the repository. 
 
 ## Use of the script to generate annual age and gender distribution from your data source
 
