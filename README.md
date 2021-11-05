@@ -15,9 +15,9 @@ To prove that the script can run on the four supported CDMs and produce the same
 
 The script of the main page is what can be used to compute age and gender distribution of a data source converted to one of the four CDMs.
 
-In order to use such script, the following instructions need to be followed
+In order to use such script, please follows the next steps:
 
-1) Download the script
+1) Download the script in a computer where your data source converted to a CDM is stored
 2) In the file to_run.R, set the parameter 'CDMs' to the value of the CDM your data is converted to
 4) Save your data in the corresponding input folder
 5) In the file to_run.R, set the parameter 'years' to the list of years documented in your data
