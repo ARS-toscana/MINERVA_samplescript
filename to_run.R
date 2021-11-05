@@ -1,8 +1,12 @@
 #-------------------------------
 # MINERVA script
-# v1.1 - 15 October 2021
+# v1.2 - 5 November 2021
 # authors: Olga Paoletti, Claudia Bartolini, Rosa Gini
 
+# changelog v1.2
+# debugged presence at 1 Jan
+# added time-dependent age
+# parameterised year
 
 #parameters----------------------------------------------
 rm(list=ls(all.names=TRUE))
