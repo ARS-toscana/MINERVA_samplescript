@@ -58,6 +58,11 @@ age_fast = function(from, to) {
 
 # -------------------------
 # set and create directories
+dirinput <- vector(mode="list")
+for (CDM in CDMs){ 
+  dirinput[[CDM]] <- paste0(thisdir,"/i_input_",CDM,"/")
+  }
+  
 diroutput <- paste0(thisdir,"/g_output/") 
 dirtemp<- paste0(thisdir,"/g_intermediate/")
 dirmacro <- paste0(thisdir,"/p_macro/")
@@ -73,7 +78,6 @@ source(paste0(dirmacro,"CreateSpells_v14.R"))
 # run steps
 
 for (CDM in CDMs){
-  dirinput <- paste0(thisdir,"/i_input_",CDM,"/") 
   source(paste0(thisdir,"/step_1_T2_create_study_variable_datasets_D3.R"))
 }
 source(paste0(thisdir,"/step_2_check_that_all_D3s_are_equal.R"))
