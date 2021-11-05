@@ -39,7 +39,7 @@ age_fast = function(from, to) {
 }
 
 #directories----
-
+dirinput <- paste0(thisdir,"/i_input_",CDM,"/") 
 diroutput <- paste0(thisdir,"/g_output/") 
 dirmacro <- paste0(thisdir,"/p_macro/")
 suppressWarnings(if (!file.exists(diroutput)) dir.create(file.path( diroutput)))
@@ -53,7 +53,7 @@ source(paste0(dirmacro,"CreateSpells_v14.R"))
 # CDM <- "TheShinISS"
 #CDM <- "OMOP"
 
-CDMs <- c("ConcePTION","OMOP","Nordic","TheShinISS")
+CDMs <- c("ConcePTION")
 
 for (CDM in CDMs){
   source(paste0(thisdir,"/step_1_T2_create_study_variable_datasets_D3.R"))
