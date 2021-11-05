@@ -1,6 +1,6 @@
 # in this step the file of study variables is created from the instance of the CDM
 
-namefileoutput <- paste0(diroutput,"D3_",CDM,".csv")
+namefileoutput <- paste0(dirtemp,"D3_",CDM,".csv")
 
 print(paste0("creating study variables from mock data converted to the ",CDM," CDM"))
 

@@ -1,7 +1,7 @@
 # in this step the four files D3_CDM.csv are proved to e equaland one of them is saved as D3
 
-dirinput <- diroutput
-namefileoutput <- paste0(diroutput,"D3.csv")
+dirinput <- dirtemp
+namefileoutput <- paste0(dirtemp,"D3.csv")
 
 print(paste0("creating study variables from mock data converted to the ",CDM," CDM"))
 

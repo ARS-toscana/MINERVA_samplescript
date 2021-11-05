@@ -39,11 +39,13 @@ age_fast = function(from, to) {
 }
 
 #directories----
-dirinput <- paste0(thisdir,"/i_input_",CDM,"/") 
+
 diroutput <- paste0(thisdir,"/g_output/") 
 dirmacro <- paste0(thisdir,"/p_macro/")
+dirtemp<- paste0(thisdir,"/g_intermediate/")
 suppressWarnings(if (!file.exists(diroutput)) dir.create(file.path( diroutput)))
 suppressWarnings(if (!file.exists(dirmacro)) dir.create(file.path( dirmacro)))
+suppressWarnings(if (!file.exists(dirtemp)) dir.create(file.path( dirtemp)))
 
 source(paste0(dirmacro,"CreateSpells_v14.R"))
 
@@ -56,6 +58,7 @@ source(paste0(dirmacro,"CreateSpells_v14.R"))
 CDMs <- c("ConcePTION")
 
 for (CDM in CDMs){
+  dirinput <- paste0(thisdir,"/i_input_",CDM,"/") 
   source(paste0(thisdir,"/step_1_T2_create_study_variable_datasets_D3.R"))
 }
 source(paste0(thisdir,"/step_2_check_that_all_D3s_are_equal.R"))

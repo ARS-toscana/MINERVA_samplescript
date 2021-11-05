@@ -52,7 +52,7 @@ fwrite(RES_gender,file=paste0(diroutput,"RES_gender.csv"))
 
 #
 if (!require("rmarkdown")) install.packages("rmarkdown")
-if (!require("ggplot")) install.packages("ggplot")
+if (!require("ggplot2")) install.packages("ggplot2")
 if (!require("plotly")) install.packages("plotly")
 library(rmarkdown)
 library(ggplot2)
