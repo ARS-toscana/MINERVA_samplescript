@@ -53,7 +53,9 @@ source(paste0(dirmacro,"CreateSpells_v14.R"))
 # CDM <- "TheShinISS"
 #CDM <- "OMOP"
 
-for (CDM in c("ConcePTION","OMOP","Nordic","TheShinISS")){
+CDMs <- c("ConcePTION","OMOP","Nordic","TheShinISS")
+
+for (CDM in CDMs){
   source(paste0(thisdir,"/step_1_T2_create_study_variable_datasets_D3.R"))
 }
 source(paste0(thisdir,"/step_2_check_that_all_D3s_are_equal.R"))
