@@ -21,6 +21,6 @@ In order to use such script, please follows the next steps:
 2) In the file to_run.R, set the parameter 'CDMs' to the value of the CDM your data is converted to
 4) Save your data in the corresponding input folder
 5) In the file to_run.R, set the parameter 'years' to the list of years documented in your data
-6) In the file to_run.R, set the parameter 'years' to the list of years documented in your data
-7) Run the script to_run.R, set the parameters Agebands and the corresponding Labels
+6) In the file to_run.R, set the parameters Agebands and the corresponding Labels (if you wish to change them)
+7) Run the script to_run.R
 8) At the end of the script, the annual distribution of age and gender is saved in csv in the folder g_output in three files named RES_ageband.csv, RES_gender.csv, RES_ageband_by_gender.csv.
