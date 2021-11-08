@@ -102,7 +102,7 @@ if (CDM == "ConcePTION" | CDM == "OMOP") {
 
 # #CHECK PRESENCE PER YEAR: a subject is present in the year if is for one day in survey observation
 for ( i in 1:length(years)){
-  D3[ entry_spell_category < as_date(paste0(years[i],"0101")) & exit_spell_category >= as_date(paste0(years[i],"0101")) , years[i]:=1]
+  D3[ entry_spell_category < as_date(paste0(years[i],"0101")) & exit_spell_category >= as_date(paste0(years[i],"0101")) , paste0("year_",years[i]):=1]
   
   #COMPUTE AGE
   D3<-D3[,paste0("age",years[i]):=age_fast(birth_date,as_date(paste0(years[i],"0101")))]
@@ -111,7 +111,7 @@ for ( i in 1:length(years)){
 
 
 #CLEAN AND EXPORT D3
-vartokeep <- c('person_id','gender',years, paste0("age_bands", years))
+vartokeep <- c('person_id','gender',paste0("year_",years), paste0("age_bands", years))
 
 # D3<-D3[!is.na(get(years[1])) & !is.na(get(years[2])) & !is.na(get(years[3])) & !is.na(get(years[4])) & !is.na(get(years[5])), ]
 D3 <- unique(D3[,..vartokeep])

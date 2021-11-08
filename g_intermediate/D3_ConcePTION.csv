@@ -1,4 +1,4 @@
-person_id,gender,2015,2016,2017,2018,2019,age_bands2015,age_bands2016,age_bands2017,age_bands2018,age_bands2019
+person_id,gender,year_2015,year_2016,year_2017,year_2018,year_2019,age_bands2015,age_bands2016,age_bands2017,age_bands2018,age_bands2019
 MINERVA_MOCKDATA00001,F,1,1,1,1,1,60-69,60-69,60-69,60-69,60-69
 MINERVA_MOCKDATA00002,F,,,,,,0-19,0-19,0-19,0-19,0-19
 MINERVA_MOCKDATA00002,F,1,1,1,1,,0-19,0-19,0-19,0-19,0-19

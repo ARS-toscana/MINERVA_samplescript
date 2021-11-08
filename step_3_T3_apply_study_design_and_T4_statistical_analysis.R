@@ -1,14 +1,14 @@
 
 #LOAD THE D3 file and create the aggregated ones
-D3<-fread(paste0(dirtemp,"D3.csv"), skip=1, header=TRUE)
+D3<-fread(paste0(dirtemp,"D3.csv"))
 
 agebandss<-paste0("age_bands", years)
 
 #aggregation of values by gender agebands and years
-D3_aggregated<-D3[, .(count = .N), by = c(agebandss,years,"gender")]
+D3_aggregated<-D3[, .(count = .N), by = c(agebandss,paste0("year_",years),"gender")]
 
 
- D3_melt<-data.table::melt(D3_aggregated, measure = list(agebandss,years),variable.name="year",
+ D3_melt<-data.table::melt(D3_aggregated, measure = list(agebandss,paste0("year_",years)),variable.name="year",
                                 value.name = c("age_bands","present"), na.rm = T)
 
  vect_recode_years <- years
